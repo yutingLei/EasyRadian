@@ -42,6 +42,9 @@ public class ERView: UIView {
     /// 是否显示百分比在弧形图上
     public var showPercentsInRadian = true
 
+    /// 3D效果
+    public var show3DEffect = false
+
     /// 标题以及相关
     public var titleText: String?       /// 标题
     public var titleLabel: UILabel? {   /// 标题实例
@@ -235,6 +238,7 @@ extension ERView {
         let radianView = ERCircleView(frame: CGRect(x: 0, y: 0, width: w, height: w))
         radianView.drawRule = drawRule
         radianView.showShadow = showShadow
+        radianView.show3DEffect = show3DEffect
         radianView.center = CGPoint(x: x, y: y)
         addSubview(radianView)
 

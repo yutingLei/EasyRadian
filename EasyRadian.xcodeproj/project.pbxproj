@@ -10,7 +10,38 @@
 		847F86CA20B266CB00795886 /* EasyRadian.h in Headers */ = {isa = PBXBuildFile; fileRef = 847F86C820B266CB00795886 /* EasyRadian.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		847F86D220B2672600795886 /* ERView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F86D020B2672500795886 /* ERView.swift */; };
 		847F86D320B2672600795886 /* ERCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F86D120B2672600795886 /* ERCircleView.swift */; };
+		847F86F920B29FE300795886 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F86F820B29FE300795886 /* AppDelegate.swift */; };
+		847F86FB20B29FE300795886 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F86FA20B29FE300795886 /* ViewController.swift */; };
+		847F86FE20B29FE300795886 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 847F86FC20B29FE300795886 /* Main.storyboard */; };
+		847F870020B29FE400795886 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 847F86FF20B29FE400795886 /* Assets.xcassets */; };
+		847F870320B29FE400795886 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 847F870120B29FE400795886 /* LaunchScreen.storyboard */; };
+		847F870820B2A00800795886 /* EasyRadian.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 847F86C520B266CB00795886 /* EasyRadian.framework */; };
+		847F870920B2A00800795886 /* EasyRadian.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 847F86C520B266CB00795886 /* EasyRadian.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		847F870A20B2A00800795886 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 847F86BC20B266CB00795886 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 847F86C420B266CB00795886;
+			remoteInfo = EasyRadian;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		847F870C20B2A00800795886 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				847F870920B2A00800795886 /* EasyRadian.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		847F86C520B266CB00795886 /* EasyRadian.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EasyRadian.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -18,6 +49,13 @@
 		847F86C920B266CB00795886 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		847F86D020B2672500795886 /* ERView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ERView.swift; sourceTree = "<group>"; };
 		847F86D120B2672600795886 /* ERCircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ERCircleView.swift; sourceTree = "<group>"; };
+		847F86F620B29FE300795886 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		847F86F820B29FE300795886 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		847F86FA20B29FE300795886 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		847F86FD20B29FE300795886 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		847F86FF20B29FE400795886 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		847F870220B29FE400795886 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		847F870420B29FE400795886 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,6 +66,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		847F86F320B29FE300795886 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				847F870820B2A00800795886 /* EasyRadian.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -35,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				847F86C720B266CB00795886 /* EasyRadian */,
+				847F86F720B29FE300795886 /* Example */,
 				847F86C620B266CB00795886 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				847F86C520B266CB00795886 /* EasyRadian.framework */,
+				847F86F620B29FE300795886 /* Example.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -56,6 +104,19 @@
 				847F86C920B266CB00795886 /* Info.plist */,
 			);
 			path = EasyRadian;
+			sourceTree = "<group>";
+		};
+		847F86F720B29FE300795886 /* Example */ = {
+			isa = PBXGroup;
+			children = (
+				847F86F820B29FE300795886 /* AppDelegate.swift */,
+				847F86FA20B29FE300795886 /* ViewController.swift */,
+				847F86FC20B29FE300795886 /* Main.storyboard */,
+				847F86FF20B29FE400795886 /* Assets.xcassets */,
+				847F870120B29FE400795886 /* LaunchScreen.storyboard */,
+				847F870420B29FE400795886 /* Info.plist */,
+			);
+			path = Example;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -90,18 +151,41 @@
 			productReference = 847F86C520B266CB00795886 /* EasyRadian.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		847F86F520B29FE300795886 /* Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 847F870520B29FE400795886 /* Build configuration list for PBXNativeTarget "Example" */;
+			buildPhases = (
+				847F86F220B29FE300795886 /* Sources */,
+				847F86F320B29FE300795886 /* Frameworks */,
+				847F86F420B29FE300795886 /* Resources */,
+				847F870C20B2A00800795886 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				847F870B20B2A00800795886 /* PBXTargetDependency */,
+			);
+			name = Example;
+			productName = Example;
+			productReference = 847F86F620B29FE300795886 /* Example.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		847F86BC20B266CB00795886 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0930;
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = Develop;
 				TargetAttributes = {
 					847F86C420B266CB00795886 = {
 						CreatedOnToolsVersion = 9.3;
 						LastSwiftMigration = 0930;
+					};
+					847F86F520B29FE300795886 = {
+						CreatedOnToolsVersion = 9.3;
 					};
 				};
 			};
@@ -111,6 +195,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 847F86BB20B266CB00795886;
 			productRefGroup = 847F86C620B266CB00795886 /* Products */;
@@ -118,6 +203,7 @@
 			projectRoot = "";
 			targets = (
 				847F86C420B266CB00795886 /* EasyRadian */,
+				847F86F520B29FE300795886 /* Example */,
 			);
 		};
 /* End PBXProject section */
@@ -127,6 +213,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		847F86F420B29FE300795886 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				847F870320B29FE400795886 /* LaunchScreen.storyboard in Resources */,
+				847F870020B29FE400795886 /* Assets.xcassets in Resources */,
+				847F86FE20B29FE300795886 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,7 +238,43 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		847F86F220B29FE300795886 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				847F86FB20B29FE300795886 /* ViewController.swift in Sources */,
+				847F86F920B29FE300795886 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		847F870B20B2A00800795886 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 847F86C420B266CB00795886 /* EasyRadian */;
+			targetProxy = 847F870A20B2A00800795886 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		847F86FC20B29FE300795886 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				847F86FD20B29FE300795886 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		847F870120B29FE400795886 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				847F870220B29FE400795886 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		847F86CB20B266CB00795886 /* Debug */ = {
@@ -316,6 +448,42 @@
 			};
 			name = Release;
 		};
+		847F870620B29FE400795886 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = Example/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.develop.Example;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		847F870720B29FE400795886 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = Example/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.develop.Example;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -333,6 +501,15 @@
 			buildConfigurations = (
 				847F86CE20B266CB00795886 /* Debug */,
 				847F86CF20B266CB00795886 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		847F870520B29FE400795886 /* Build configuration list for PBXNativeTarget "Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				847F870620B29FE400795886 /* Debug */,
+				847F870720B29FE400795886 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
