@@ -1,8 +1,8 @@
 ## Install
  
-* **Use `Cathage`**
+* **Use `Carthage`**
 
-`cd` to your project, and create a file named `Cartfile`, and fill content with follow:
+`cd` to your project, and create a file named `Cartfile`, and fill follow contents:
 
 ```
 github "yutingLei/EasyRadian" "master"
@@ -39,24 +39,24 @@ if let erView = erView {
 }
 ```
 
-there is nothing at the time, you should config some properties.
+there is nothing at present, you should config some properties.
 
 ### **Config**
 
 | property | type | description |
 | :----------: | :----: | :---------: |
 | `drawRule` | enum | `padding`, `fill`, see below. |
-| `showShadow` | bool | The radian View has shadow. default `true` |
+| `showShadow` | bool | Graphic radian view with shadow. default `true` |
 | `showPercentInRadian` | bool | Show the percent string in the `erView`, default `true` |
 | `titleText` | string | The view's title. `optional` |
 | `titleLabel` | UILabel | The view's title label, get only |
 | `showDigest` | bool | Show the digest |
 | `digestKey`  | string | The key that get the digest's value |
-| `digestLoc` | enum | Where the digest graphics |
+| `digestLoc` | enum | Where the digest should to graphic |
 | `percentKey` | string | The key that get the percent's value |
-| `drawsInfo` | array.of(object/number)| The info that will graphics |
+| `drawsInfo` | array.of(object/number)| The infos that will be graphic |
 | `colors` | array.of(UIColor)| Every radian's color. `optional` |
-| `show3DEffect` | bool | 3D effect view |
+| `show3DEffect` | bool | 3D effect |
 
 <mark>if you set `colors` with `nil`. graphic with random color.</mark>
 
