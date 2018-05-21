@@ -48,6 +48,7 @@ and then, add `erView` to the contentView that you want to show on. also, there 
 | `percentKey` | The key that get the percent's value |
 | `drawsInfo` | The info that will graphics |
 | `colors` | Every radian's color. `optional` |
+| `show3DEffect` | 3D effect view |
 
 <mark>if you set `colors` with `nil`. stroke with random color.</mark>
 
@@ -94,4 +95,10 @@ erView.startDraw()
 <img src="asserts/easy6.png" width="375">
 <img src="asserts/easy7.png" width="375">
 <img src="asserts/easy8.png" width="375">
+</div>
+
+`show3DEffect`(ignore `drawRule`)
+
+<div align="center">
+<img src="asserts/easy9.png" width="375">
 </div>
