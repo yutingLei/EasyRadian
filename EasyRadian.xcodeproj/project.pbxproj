@@ -8,12 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		847F86CA20B266CB00795886 /* EasyRadian.h in Headers */ = {isa = PBXBuildFile; fileRef = 847F86C820B266CB00795886 /* EasyRadian.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		847F86D220B2672600795886 /* ERView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F86D020B2672500795886 /* ERView.swift */; };
+		847F86D320B2672600795886 /* ERCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F86D120B2672600795886 /* ERCircleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		847F86C520B266CB00795886 /* EasyRadian.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EasyRadian.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		847F86C820B266CB00795886 /* EasyRadian.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EasyRadian.h; sourceTree = "<group>"; };
 		847F86C920B266CB00795886 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		847F86D020B2672500795886 /* ERView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ERView.swift; sourceTree = "<group>"; };
+		847F86D120B2672600795886 /* ERCircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ERCircleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +51,8 @@
 			isa = PBXGroup;
 			children = (
 				847F86C820B266CB00795886 /* EasyRadian.h */,
+				847F86D020B2672500795886 /* ERView.swift */,
+				847F86D120B2672600795886 /* ERCircleView.swift */,
 				847F86C920B266CB00795886 /* Info.plist */,
 			);
 			path = EasyRadian;
@@ -95,6 +101,7 @@
 				TargetAttributes = {
 					847F86C420B266CB00795886 = {
 						CreatedOnToolsVersion = 9.3;
+						LastSwiftMigration = 0930;
 					};
 				};
 			};
@@ -130,6 +137,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				847F86D220B2672600795886 /* ERView.swift in Sources */,
+				847F86D320B2672600795886 /* ERCircleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,6 +268,7 @@
 		847F86CE20B266CB00795886 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -275,6 +285,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.develop.EasyRadian;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -283,6 +294,7 @@
 		847F86CF20B266CB00795886 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
