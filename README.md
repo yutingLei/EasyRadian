@@ -20,7 +20,7 @@ $ carthage update
 
 Init with `ERView`, and constructure `DrawsInfo`.
 
-```
+```swift
 let frame = CGRect(x: 0, y: 64, width: view.frame.width, height: view.frame.height - 128)
 let drawsInfo = [["type": "华为", "percent": "35%"],
                  ["type": "OPPO", "percent": "20%"],
@@ -31,26 +31,34 @@ let drawsInfo = [["type": "华为", "percent": "35%"],
                  ["type": "金立", "percent": "5%"]]
 let erView = ERView(frame: frame, drawsInfo: drawsInfo)
 ```
-and then, add `erView` to the contentView that you want to show on. also, there is nothing at the time, you should config some params.
+and then, add `erView` to the contentView that you want to show in.
+
+```swift
+if let erView = erView {
+	view.addSubview(erView)
+}
+```
+
+there is nothing at the time, you should config some properties.
 
 ### **Config**
 
-| param's name | description |
-| :----------: | :---------: |
-| `drawRule` | `padding`, `fill`, see below. |
-| `showShadow` | The radian View has shadow. default `true` |
-| `showPercentInRadian` | Show the percent string in the `erView`, default `true` |
-| `titleText` | The view's title. `optional` |
-| `titleLabel` | The view's title label, get only |
-| `showDigest` | Show the digest |
-| `digestKey`  | The key that get the digest's value |
-| `digestLoc` | Where the digest graphics |
-| `percentKey` | The key that get the percent's value |
-| `drawsInfo` | The info that will graphics |
-| `colors` | Every radian's color. `optional` |
-| `show3DEffect` | 3D effect view |
+| property | type | description |
+| :----------: | :----: | :---------: |
+| `drawRule` | enum | `padding`, `fill`, see below. |
+| `showShadow` | bool | The radian View has shadow. default `true` |
+| `showPercentInRadian` | bool | Show the percent string in the `erView`, default `true` |
+| `titleText` | string | The view's title. `optional` |
+| `titleLabel` | UILabel | The view's title label, get only |
+| `showDigest` | bool | Show the digest |
+| `digestKey`  | string | The key that get the digest's value |
+| `digestLoc` | enum | Where the digest graphics |
+| `percentKey` | string | The key that get the percent's value |
+| `drawsInfo` | array.of(object/number)| The info that will graphics |
+| `colors` | array.of(UIColor)| Every radian's color. `optional` |
+| `show3DEffect` | bool | 3D effect view |
 
-<mark>if you set `colors` with `nil`. stroke with random color.</mark>
+<mark>if you set `colors` with `nil`. graphic with random color.</mark>
 
 for example:
 
@@ -64,7 +72,7 @@ erView.percentKey = "percent"
 erView.showShadow = false
 ```
 
-### **Stroke**
+### **Graphics**
 
 you must invoke `startDraw()` method.
 
@@ -72,7 +80,7 @@ you must invoke `startDraw()` method.
 erView.startDraw()
 ```
 
-### **Results**
+### **Effects**
 
 `showShadow`: `true` or `false`
 
