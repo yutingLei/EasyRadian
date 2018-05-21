@@ -75,23 +75,23 @@ erView.startDraw()
 
 `showShadow`: `true` or `false`
 
-<di align="center">
+<div align="center">
 <img src="asserts/easy2.png" width="375">
 <img src="asserts/easy1.png" width="375">
-</di>
+</div>
 
 `drawRule`: `.padding`, `.fill`
 
-<di align="center">
+<div align="center">
 <img src="asserts/easy3.png" width="375">
 <img src="asserts/easy4.png" width="375">
-</di>
+</div>
 
 `digestLoc`: `top` `left` `right` `bottom`
 
-<di align="center">
+<div align="center">
 <img src="asserts/easy5.png" width="375">
 <img src="asserts/easy6.png" width="375">
 <img src="asserts/easy7.png" width="375">
 <img src="asserts/easy8.png" width="375">
-</di>
+</div>
