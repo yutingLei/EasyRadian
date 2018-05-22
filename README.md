@@ -57,6 +57,8 @@ there is nothing at present, you should config some properties.
 | `drawsInfo` | array.of(object/number)| The infos that will be graphic |
 | `colors` | array.of(UIColor)| Every radian's color. `optional` |
 | `show3DEffect` | bool | 3D effect |
+| `allowHistogram` | bool | Support chart, default `true` |
+| `isHistogramFirst` | bool | Show chart view first. |
 
 <mark>if you set `colors` with `nil`. graphic with random color.</mark>
 
@@ -109,4 +111,11 @@ erView.startDraw()
 
 <div align="center">
 <img src="asserts/easy9.png" width="375">
+</div>
+
+The result of charts:
+
+<div align="center">
+<img src="asserts/easy10.png" width="375">
+<img src="asserts/easy11.png" width="375">
 </div>
