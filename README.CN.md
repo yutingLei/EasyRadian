@@ -1,24 +1,24 @@
-## Install
+## 导入框架
  
-* **Use `Carthage`**
+* **使用 `Carthage`**
 
-`cd` to your project, and create a file named `Cartfile`, and fill follow contents:
+进入你的工程目录, 创建一个名为`Cartfile`的文件, 将下面的内容复制进去:
 
 ```
 github "yutingLei/EasyRadian" "master"
 ```
 
-then: 
+然后在终端，`cd`到你的工程目录，运行下面的命令: 
 
 ```
 $ carthage update
 ```
 
-## Usage
+## 使用
 
-### **Init `ERView`**
+### **初始化`ERView`**
 
-Init with `ERView`, and constructure `DrawsInfo`.
+初始化`ERView`, 需要构建`drawsInfo`，代码如下.
 
 ```swift
 let frame = CGRect(x: 0, y: 64, width: view.frame.width, height: view.frame.height - 128)
@@ -31,7 +31,7 @@ let drawsInfo = [["type": "华为", "percent": "35%"],
                  ["type": "金立", "percent": "5%"]]
 let erView = ERView(frame: frame, drawsInfo: drawsInfo)
 ```
-and then, add `erView` to the contentView that you want to show in.
+然后将你创建的`erView`添加到你的视图上，注意初始化函数可能返回`nil`，是因为你创建的视图太小.
 
 ```swift
 if let erView = erView {
@@ -39,28 +39,30 @@ if let erView = erView {
 }
 ```
 
-there is nothing at present, you should config some properties.
+此时`erView`中没有任何东西, 你还需要设置一些参数.
 
 ### **Config**
 
 | property | type | description |
 | :----------: | :----: | :---------: |
-| `drawRule` | enum | `padding`, `fill`, see below. |
-| `showShadow` | bool | Graphic radian view with shadow. default `true` |
-| `showPercentInRadian` | bool | Show the percent string in the `erView`, default `true` |
-| `titleText` | string | The view's title. `optional` |
-| `titleLabel` | UILabel | The view's title label, get only |
-| `showDigest` | bool | Show the digest |
-| `digestKey`  | string | The key that get the digest's value |
-| `digestLoc` | enum | Where the digest should to graphic |
-| `percentKey` | string | The key that get the percent's value |
-| `drawsInfo` | array.of(object/number)| The infos that will be graphic |
-| `colors` | array.of(UIColor)| Every radian's color. `optional` |
-| `show3DEffect` | bool | 3D effect |
+| `drawRule` | enum | `padding`, `fill`, 两种图形. |
+| `showShadow` | bool | 在绘制百分比图时，是否显示阴影效果. 默认 `true` |
+| `showPercentInRadian` | bool | 显示百分比, 默认 `true` |
+| `titleText` | string | 视图的标题. `optional` |
+| `titleLabel` | UILabel | 视图标题创建成功后的标签实例, 只读 |
+| `showDigest` | bool | 是否显示摘要，若显示，则必须设置`digestLoc` |
+| `digestKey`  | string | 获取摘要值得key |
+| `digestLoc` | enum | 摘要显示位置 |
+| `percentKey` | string | 获取百分值得key |
+| `drawsInfo` | array.of(object/number)| 绘制的信息 |
+| `colors` | array.of(UIColor)|每个百分值所对应的颜色. `optional` |
+| `show3DEffect` | bool | 3D效果，`true`下，`drawRule`设置无用 |
 
-<mark>if you set `colors` with `nil`. graphic with random color.</mark>
+配置说明:  
+	- 如果未设置颜色`colors`，将会生成随机颜色。
+	- 任何参数都必须在调用`startDraw()`函数之前设置好
 
-for example:
+例如:
 
 ```
 // erView.drawRule = .fill // default is fill, so you needn't set it.
@@ -72,17 +74,17 @@ erView.percentKey = "percent"
 erView.showShadow = false
 ```
 
-### **Graphics**
+### **绘制**
 
-you must invoke `startDraw()` method.
+调用`startDraw()`开始绘制.
 
 ```
 erView.startDraw()
 ```
 
-### **Effects**
+### **效果图**
 
-`showShadow`: `true` or `false`
+`showShadow`: `true` 或 `false`
 
 <div align="center">
 <img src="asserts/easy2.png" width="375">
@@ -105,7 +107,7 @@ erView.startDraw()
 <img src="asserts/easy8.png" width="375">
 </div>
 
-`show3DEffect`(ignore `drawRule`)
+`show3DEffect`(将不会使用`drawRule`设置)
 
 <div align="center">
 <img src="asserts/easy9.png" width="375">
