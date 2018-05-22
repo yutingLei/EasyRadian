@@ -31,6 +31,15 @@ let drawsInfo = [["type": "华为", "percent": "35%"],
                  ["type": "金立", "percent": "5%"]]
 let erView = ERView(frame: frame, drawsInfo: drawsInfo)
 ```
+
+当然也可以不构建`drawsInfo`，后面用给参数赋值的方式也可以.
+
+```swift
+let frame = CGRect(x: 0, y: 64, width: view.frame.width, height: view.frame.height - 128)
+let erView = ERView(frame: frame)
+erView?.drawsInfo = <#绘制信息#>
+```
+
 然后将你创建的`erView`添加到你的视图上，注意初始化函数可能返回`nil`，是因为你创建的视图太小.
 
 ```swift
