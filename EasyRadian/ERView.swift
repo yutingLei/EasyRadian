@@ -31,7 +31,7 @@ public class ERView: UIView {
     }
 
     //MARK: -
-    //MARK: vars
+    //MARK: public vars
 
     /// 绘制规则, default is fill mode
     public var drawRule: ERDrawRule = .fill
@@ -40,17 +40,22 @@ public class ERView: UIView {
     public var showShadow = true
 
     /// 是否显示百分比在弧形图上
-    public var showPercentsInRadian = true
+    public var showPercents = true
 
     /// 3D效果
     public var show3DEffect = false
+
+    /// 是否创建柱状图(柱状体暂不支持3D效果)
+    public var allowHistogram = true
+
+    /// 是否首先显示柱状图
+    public var isHistogramFirst = false
 
     /// 标题以及相关
     public var titleText: String?       /// 标题
     public var titleLabel: UILabel? {   /// 标题实例
         get { return _titleLabel }
     }
-    fileprivate var _titleLabel: UILabel?
 
     /// 摘要信息相关
     public var showDigest = true                /// 是否显示摘要, 默认true
@@ -73,6 +78,20 @@ public class ERView: UIView {
 
     /// 绘制每一块的颜色. 若不设置，将会自动生成随机颜色
     public var colors: [UIColor]?
+
+    //MARK: -
+    //MARK: private vars
+    /// 标题
+    fileprivate var _titleLabel: UILabel?
+
+    /// 是否调用了startDraw
+    fileprivate var _isStartedDraw = false
+
+    /// 弧形图容器
+    fileprivate var _circleView: UIView!
+
+    /// 柱状图容器
+    fileprivate var _histogramView: ERHistogramView?
 
     //MARK: -
 
@@ -109,20 +128,28 @@ extension ERView {
      */
     public func startDraw() {
 
+        guard !_isStartedDraw else {
+            print("请不要调用两次startDraw方法！推荐设置好所有参数，然后调用该方法.")
+            return
+        }
+        _isStartedDraw = true
+
         guard let drawsInfo = drawsInfo else {
             print("未发现需要绘制的信息。")
             return
         }
 
         /// 绘制标题
+        var th: CGFloat = allowHistogram ? 25 : 5
         if let titleText = titleText {
             if _titleLabel == nil {
-                let textHeight = getHeight(of: titleText, limitWidth: frame.width - 10)
-                _titleLabel = UILabel(frame: CGRect(x: 5, y: 5, width: frame.width - 10, height: textHeight))
+                let textHeight = max(25, ERView.getHeight(of: titleText, limitWidth: frame.width - 80))
+                _titleLabel = UILabel(frame: CGRect(x: 40, y: 5, width: frame.width - 80, height: textHeight))
                 _titleLabel?.textAlignment = .center
                 _titleLabel?.numberOfLines = 0
                 _titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
                 addSubview(_titleLabel!)
+                th = max(th, textHeight)
             }
             _titleLabel?.text = titleText
         }
@@ -134,10 +161,57 @@ extension ERView {
         if colors!.count != drawsInfo.count && colors!.count <= drawsInfo.count {
             let startIndex = colors!.count
             for _ in startIndex..<drawsInfo.count {
-                let color = randomColor(neitherColors: colors)
+                let color = ERView.randomColor(neitherColors: colors)
                 colors?.append(color)
             }
         }
+
+        /// 声明两个视图，承载circleView和histogramView
+        let vFrame = CGRect(x: 0, y: th + 5, width: frame.width, height: frame.height - th - 5)
+        _circleView = UIView(frame: vFrame)
+        stroke(_circleView, with: drawsInfo)
+        addSubview(_circleView)
+
+        if let histogramView = allowHistogram ? ERHistogramView(frame: vFrame) : nil {
+            /// 创建切换按钮
+            let switchBtn = UIButton(frame: CGRect(x: bounds.width - 35, y: 5, width: 30, height: th))
+            switchBtn.layer.cornerRadius = 3
+            switchBtn.layer.borderWidth = 1
+            switchBtn.layer.borderColor = UIColor.blue.cgColor
+            switchBtn.titleLabel?.font = UIFont.systemFont(ofSize: 8)
+            switchBtn.setTitleColor(UIColor.blue, for: .normal)
+            switchBtn.showsTouchWhenHighlighted = true
+            switchBtn.addTarget(self, action: #selector(switchGraphics), for: .touchUpInside)
+            addSubview(switchBtn)
+
+            if isHistogramFirst {
+                switchBtn.setTitle("弧形图", for: .normal)
+                addSubview(histogramView)
+                sendSubview(toBack: _circleView)
+            } else {
+                switchBtn.setTitle("柱状图", for: .normal)
+                insertSubview(histogramView, at: 0)
+            }
+            _histogramView = histogramView
+            _histogramView?.showPercent = showPercents
+            _histogramView?.show3DEffect = show3DEffect
+            _histogramView?.stroke(drawsInfo,
+                                   colors: colors!,
+                                   digestKey: digestKey,
+                                   percentKey: percentKey)
+            { (points, percents) in
+
+            }
+        }
+    }
+
+    /// 绘制弧形视图
+    ///
+    /// - Parameters:
+    ///   - circleView: 弧形时图承载容器
+    ///   - drawsInfo: 绘制信息
+    ///   - offsetY: 偏移
+    fileprivate func stroke(_ circleView: UIView, with drawsInfo: [Any]) {
         /// 绘制摘要
         var maxDigestWidth: CGFloat = 0
         var maxDigestHeight: CGFloat = 0
@@ -147,28 +221,28 @@ extension ERView {
             let digestKey = digestKey
         {
             /// 在top/bottom模式下，计算摘要所需高度
-            let scalar = UIScreen.main.bounds.width > 320 ? 4 : 3
+            let scalar = circleView.bounds.width > 320 ? 4 : 3
             let count = infos.count / scalar + (infos.count % scalar == 0 ? 0 : 1)
             maxDigestHeight = CGFloat(count) * 20
 
             /// 计算绘制起始点
             var startX: CGFloat = 5
-            var startY = _titleLabel == nil ? 5 : _titleLabel!.frame.height
-            let w = frame.width / 4
+            var startY: CGFloat = 20
+            let w = circleView.bounds.width / 4
             if digestLoc == .bottom {
-                startY = frame.height - maxDigestHeight - 5
+                startY = circleView.bounds.height - maxDigestHeight - 5
             }
 
 
             for i in 0..<infos.count {
-                let color = colors!.count > i ? colors![i] : randomColor(neitherColors: colors)
+                let color = colors!.count > i ? colors![i] : ERView.randomColor(neitherColors: colors)
                 let digest = infos[i][digestKey] as? String ?? ""
-                let digestWidth = calculateString(digest, limitWidth: CGFloat(MAXFLOAT), limitHeight: 20)
+                let digestWidth = ERView.calculateString(digest, limitWidth: CGFloat(MAXFLOAT), limitHeight: 20)
                 if digestWidth > maxDigestWidth {
                     maxDigestWidth = digestWidth
                 }
                 if digestLoc == .right {
-                    startX = frame.width * 0.75
+                    startX = circleView.bounds.width * 0.75
                 }
 
                 let deltaW: CGFloat = digestLoc == .right ? 25 : 20
@@ -191,13 +265,13 @@ extension ERView {
 
                 digestView.addSubview(digestLabel)
                 digestView.addSubview(colorView)
-                addSubview(digestView)
+                circleView.addSubview(digestView)
 
                 if digestLoc == .right || digestLoc == .left {
                     startY += 20
                 } else {
-                    startX += (frame.width - 10) / CGFloat(scalar)
-                    if startX >= frame.width - 5 {
+                    startX += (circleView.bounds.width - 10) / CGFloat(scalar)
+                    if startX >= circleView.bounds.width - 5 {
                         startX = 5
                         startY += 20
                     }
@@ -206,48 +280,48 @@ extension ERView {
         }
 
         /// 创建弧形容器视图
-        var x = frame.width / 2
-        var y = frame.height / 2
+        var x = circleView.bounds.width / 2
+        var y = circleView.bounds.height / 2
         if let loc = digestLoc {
             switch loc {
             case .bottom:
-                let offsetY1 = _titleLabel?.frame.height ?? 5
-                let offsetY2 = frame.height - maxDigestHeight
+                let offsetY1: CGFloat = 25
+                let offsetY2 = circleView.bounds.height - maxDigestHeight
                 let destY = offsetY1 + (offsetY2 - offsetY1) / 2
-                let reserveY = frame.height - offsetY1 - frame.width / 4  - (showPercentsInRadian ? 30 : 0)
+                let reserveY = circleView.bounds.height - offsetY1 - circleView.bounds.width / 4  - (showPercents ? 30 : 0)
                 y = max(reserveY, destY)
             case .top:
-                let offsetY = maxDigestHeight + (_titleLabel?.frame.height ?? 25)
-                let destY = offsetY + (frame.height - offsetY) / 2
-                let reserveY = frame.height - 5 - frame.width / 4 + (showPercentsInRadian ? 30 : 0)
+                let offsetY = maxDigestHeight
+                let destY = offsetY + (circleView.bounds.height - offsetY) / 2
+                let reserveY = circleView.bounds.height - 5 - circleView.bounds.width / 4 + (showPercents ? 30 : 0)
                 y = min(reserveY, destY)
             case .left:
-                let offsetY = maxDigestHeight + (_titleLabel?.frame.height ?? 25)
-                if offsetY > frame.height / 2 - frame.width / 4 {
-                    x += frame.width / 8
+                let offsetY = maxDigestHeight
+                if offsetY > circleView.bounds.height / 2 - circleView.bounds.width / 4 {
+                    x += circleView.bounds.width / 8
                 }
             default:
-                let offsetY = maxDigestHeight + (_titleLabel?.frame.height ?? 25)
-                if offsetY > frame.height / 2 - frame.width / 4 {
-                    x -= frame.width / 10
+                let offsetY = maxDigestHeight
+                if offsetY > circleView.bounds.height / 2 - circleView.bounds.width / 4 {
+                    x -= circleView.bounds.width / 10
                 }
             }
         }
 
-        let w = min(frame.width / 2, frame.height / 2)
+        let w = min(circleView.bounds.width / 2, circleView.bounds.height / 2)
         let radianView = ERCircleView(frame: CGRect(x: 0, y: 0, width: w, height: w))
         radianView.drawRule = drawRule
         radianView.showShadow = showShadow
         radianView.show3DEffect = show3DEffect
         radianView.center = CGPoint(x: x, y: y)
-        addSubview(radianView)
+        circleView.addSubview(radianView)
 
         /// 开始绘制
         radianView.stroke(drawsInfo, colors: colors!, percentKey: percentKey) {[unowned self, radianView] (points, percents) in
-            guard self.showPercentsInRadian else { return }
+            guard self.showPercents else { return }
             for i in 0..<points.count {
-                let currentPoint = self.convert(points[i], from: radianView)
-                let extPoints = self.calculateExtendPoint(radianView.center, currentPoint)
+                let currentPoint = circleView.convert(points[i], from: radianView)
+                let extPoints = self.calculateExtendPoint(circleView.bounds, p: radianView.center, currentPoint)
                 let path = UIBezierPath()
                 path.move(to: currentPoint)
                 path.addLine(to: extPoints.0)
@@ -257,19 +331,41 @@ extension ERView {
                 let line = CAShapeLayer()
                 line.path = path.cgPath
                 line.strokeColor = self.colors?[i].cgColor
-                self.layer.addSublayer(line)
+                circleView.layer.addSublayer(line)
 
                 /// 添加百分比标签
-                let label = UILabel(frame: CGRect.init(x: 0, y: 0, width: 40, height: 20))
+                let label = UILabel(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
                 label.center = extPoints.1
                 label.textAlignment = .center
                 label.font = UIFont.systemFont(ofSize: 10)
                 label.text = String(format: "%.1f%%", percents[i] * 100)
-                self.addSubview(label)
+                circleView.addSubview(label)
             }
         }
     }
 
+    /// 切换绘制图形
+    @objc fileprivate func switchGraphics(_ btn: UIButton) {
+        if btn.title(for: .normal) == "柱状图" {
+            UIView.transition(from: _circleView,
+                              to: _histogramView!,
+                              duration: 2.0,
+                              options: .transitionFlipFromRight)
+            {[unowned self] isStoped in
+                self.bringSubview(toFront: self._histogramView!)
+            }
+            btn.setTitle("弧形图", for: .normal)
+        } else {
+            UIView.transition(from: _histogramView!,
+                              to: _circleView!,
+                              duration: 2.0,
+                              options: .transitionFlipFromLeft)
+            {[unowned self] isStoped in
+                self.bringSubview(toFront: self._circleView)
+            }
+            btn.setTitle("柱状图", for: .normal)
+        }
+    }
 
     /// 根据原点p和已知点p1计算扩展的两个点
     ///
@@ -277,7 +373,7 @@ extension ERView {
     ///   - p: 原点
     ///   - p1: 已知点
     /// - Returns: 原点与已知点线上的两个点
-    fileprivate func calculateExtendPoint(_ p: CGPoint, _ p1: CGPoint) -> (CGPoint, CGPoint) {
+    fileprivate func calculateExtendPoint(_ frame: CGRect, p: CGPoint, _ p1: CGPoint) -> (CGPoint, CGPoint) {
 
         /// 计算扩展点相对宽高
         let deltaX = max(p1.x, p.x) - min(p1.x, p.x)
@@ -301,15 +397,15 @@ extension ERView {
         if p1.x >= p.x && p1.y >= p.y {
             return (CGPoint(x: p.x + x2, y: p.y + y2), CGPoint(x: p.x + x3, y: p.y + y3))
         }
-        /// 第三象限
+            /// 第三象限
         else if p1.x <= p.x && p1.y >= p.y {
             return (CGPoint(x: p.x - x2, y: p.y + y2), CGPoint(x: p.x - x3, y: p.y + y3))
         }
-        /// 第二象限
+            /// 第二象限
         else if p1.x <= p.x && p1.y <= p.y {
             return (CGPoint(x: p.x - x2, y: p.y - y2), CGPoint(x: p.x - x3, y: p.y - y3))
         }
-        /// 第一象限
+            /// 第一象限
         else {
             return (CGPoint(x: p.x + x2, y: p.y - y2), CGPoint(x: p.x + x3, y: p.y - y3))
         }
@@ -319,22 +415,27 @@ extension ERView {
 //MARK: - Supports
 extension ERView {
 
-    fileprivate func getWidth(of str: String, limitHeight height: CGFloat) -> CGFloat {
+    class func getWidth(of str: String, limitHeight height: CGFloat) -> CGFloat {
         return calculateString(str, limitWidth: CGFloat(MAXFLOAT), limitHeight: height)
     }
 
-    fileprivate func getHeight(of str: String, limitWidth width: CGFloat) -> CGFloat {
+    class func getHeight(of str: String, limitWidth width: CGFloat) -> CGFloat {
         return calculateString(str, limitWidth: width, limitHeight: CGFloat(MAXFLOAT))
     }
 
-    fileprivate func calculateString(_ str: String, limitWidth: CGFloat, limitHeight: CGFloat) -> CGFloat {
+    class func calculateString(_ str: String, limitWidth: CGFloat, limitHeight: CGFloat) -> CGFloat {
         #if swift(>=4)
-        return (str as NSString).boundingRect(with: CGSize(width: limitWidth, height: limitHeight),
-                                              options: .usesLineFragmentOrigin,
-                                              attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)],
-                                              context: nil).width
+        let size = (str as NSString).boundingRect(with: CGSize(width: limitWidth, height: limitHeight),
+                                                  options: .usesLineFragmentOrigin,
+                                                  attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)],
+                                                  context: nil).size
+        if limitWidth == CGFloat(MAXFLOAT) {
+            return size.width
+        } else {
+            return size.height
+        }
         #else
-        return (str as NSString).boundingRect(with: CGSize.init(width: CGFloat(MAXFLOAT), height: 20),
+        return (str as NSString).boundingRect(with: CGSize(width: limitWidth, height: limitHeight),
         options: .usesLineFragmentOrigin,
         attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)],
         context: nil).width
@@ -344,7 +445,7 @@ extension ERView {
     /// 随机生成颜色
     ///
     /// - Returns: 返回颜色. 不能为白色
-    fileprivate func randomColor(neitherColors colors: [UIColor]? = nil) -> UIColor {
+    class func randomColor(neitherColors colors: [UIColor]? = nil) -> UIColor {
         let r = arc4random_uniform(256)
         let g = arc4random_uniform(256)
         let b = arc4random_uniform(256)

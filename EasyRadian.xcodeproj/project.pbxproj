@@ -17,6 +17,7 @@
 		847F870320B29FE400795886 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 847F870120B29FE400795886 /* LaunchScreen.storyboard */; };
 		847F870820B2A00800795886 /* EasyRadian.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 847F86C520B266CB00795886 /* EasyRadian.framework */; };
 		847F870920B2A00800795886 /* EasyRadian.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 847F86C520B266CB00795886 /* EasyRadian.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		84EF852820B3B0AD00DA522B /* ERHistogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EF852720B3B0AD00DA522B /* ERHistogramView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		847F86FF20B29FE400795886 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		847F870220B29FE400795886 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		847F870420B29FE400795886 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84EF852720B3B0AD00DA522B /* ERHistogramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ERHistogramView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 				847F86C820B266CB00795886 /* EasyRadian.h */,
 				847F86D020B2672500795886 /* ERView.swift */,
 				847F86D120B2672600795886 /* ERCircleView.swift */,
+				84EF852720B3B0AD00DA522B /* ERHistogramView.swift */,
 				847F86C920B266CB00795886 /* Info.plist */,
 			);
 			path = EasyRadian;
@@ -233,6 +236,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84EF852820B3B0AD00DA522B /* ERHistogramView.swift in Sources */,
 				847F86D220B2672600795886 /* ERView.swift in Sources */,
 				847F86D320B2672600795886 /* ERCircleView.swift in Sources */,
 			);

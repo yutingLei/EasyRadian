@@ -56,16 +56,18 @@ if let erView = erView {
 | :----------: | :----: | :---------: |
 | `drawRule` | enum | `padding`, `fill`, 两种图形. |
 | `showShadow` | bool | 在绘制百分比图时，是否显示阴影效果. 默认 `true` |
-| `showPercentInRadian` | bool | 显示百分比, 默认 `true` |
+| `showPercents` | bool | 显示百分比, 默认 `true` |
+| `show3DEffect` | bool | 3D效果，若为`true`，则`drawRule`设置无用 |
+| `allowHistogram` | bool | 是否同时创建柱状图, 默认`true` |
+| `isHistogramFirst` | bool | 是否首先显示柱状图 |
+| `showDigest` | bool | 是否显示摘要，若显示，则必须设置`digestLoc` |
 | `titleText` | string | 视图的标题. `optional` |
 | `titleLabel` | UILabel | 视图标题创建成功后的标签实例, 只读 |
-| `showDigest` | bool | 是否显示摘要，若显示，则必须设置`digestLoc` |
 | `digestKey`  | string | 获取摘要值得key |
 | `digestLoc` | enum | 摘要显示位置 |
 | `percentKey` | string | 获取百分值得key |
 | `drawsInfo` | array.of(object/number)| 绘制的信息 |
 | `colors` | array.of(UIColor)|每个百分值所对应的颜色. `optional` |
-| `show3DEffect` | bool | 3D效果，`true`下，`drawRule`设置无用 |
 
 配置说明:  
 	- 如果未设置颜色`colors`，将会生成随机颜色。
@@ -120,4 +122,10 @@ erView.startDraw()
 
 <div align="center">
 <img src="asserts/easy9.png" width="375">
+</div>
+
+柱状图效果:
+<div align="center">
+<img src="asserts/easy10.png" width="375">
+<img src="asserts/easy11.png" width="375">
 </div>

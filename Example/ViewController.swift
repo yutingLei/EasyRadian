@@ -29,6 +29,7 @@ class ViewController: UIViewController {
             erView.percentKey = "percent"
             erView.digestLoc = .top
             erView.show3DEffect = true
+            erView.isHistogramFirst = true
             erView.startDraw()
             view.addSubview(erView)
         }
