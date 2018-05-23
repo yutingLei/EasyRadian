@@ -126,7 +126,7 @@ extension ERView {
      * 绘制百分比图
      *      所有的设置在startDraw调用之前设置
      */
-    public func startDraw() {
+    public func drawStart() {
 
         guard !_isStartedDraw else {
             print("请不要调用两次startDraw方法！推荐设置好所有参数，然后调用该方法.")
