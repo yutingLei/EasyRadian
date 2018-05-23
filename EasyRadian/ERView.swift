@@ -120,6 +120,7 @@ public class ERView: UIView {
     }
 }
 
+//MARK: - Public
 extension ERView {
 
     /**
@@ -140,7 +141,34 @@ extension ERView {
         }
 
         /// 绘制标题
-        var th: CGFloat = allowHistogram ? 25 : 5
+        let th = createTitle()
+
+        /// 生成颜色
+        generateColors(by: drawsInfo)
+
+        /// 容器视图frame值
+        let vFrame = CGRect(x: 0, y: th + 5, width: frame.width, height: frame.height - th - 5)
+
+        /// 创建弧形视图容器
+        createCircleContainerView(frame: vFrame, with: drawsInfo)
+
+        /// 创建柱状图容器
+        createHistogramContainerView(frame: vFrame, with: drawsInfo)
+
+        /// 创建切换按钮
+        createSwitchButton(with: th)
+    }
+}
+
+//MARK: - Create
+extension ERView {
+
+    /// 绘制标题
+    ///
+    /// - Returns: 返回标题偏移量
+    fileprivate func createTitle() -> CGFloat {
+        /// 绘制标题
+        var offsetY: CGFloat = allowHistogram ? 25 : 5
         if let titleText = titleText {
             if _titleLabel == nil {
                 let textHeight = max(25, ERView.getHeight(of: titleText, limitWidth: frame.width - 80))
@@ -149,12 +177,17 @@ extension ERView {
                 _titleLabel?.numberOfLines = 0
                 _titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
                 addSubview(_titleLabel!)
-                th = max(th, textHeight)
+                offsetY = max(offsetY, textHeight)
             }
             _titleLabel?.text = titleText
         }
+        return offsetY
+    }
 
-        /// 生成颜色
+    /// 根据绘制信息生成随机颜色
+    ///
+    /// - Parameter drawsInfo: 绘制信息
+    fileprivate func generateColors(by drawsInfo: [Any]) {
         if colors == nil {
             colors = [UIColor]()
         }
@@ -165,31 +198,26 @@ extension ERView {
                 colors?.append(color)
             }
         }
+    }
 
-        /// 声明两个视图，承载circleView和histogramView
-        let vFrame = CGRect(x: 0, y: th + 5, width: frame.width, height: frame.height - th - 5)
-        _circleView = UIView(frame: vFrame)
-        stroke(_circleView, with: drawsInfo)
+    /// 创建弧形视图的容器
+    ///
+    /// - Parameter frame: 容器frame值
+    fileprivate func createCircleContainerView(frame: CGRect, with drawsInfo: [Any]) {
+        _circleView = UIView(frame: frame)
+        graphic(circleView: _circleView, with: drawsInfo)
         addSubview(_circleView)
+    }
 
-        if let histogramView = allowHistogram ? ERHistogramView(frame: vFrame) : nil {
-            /// 创建切换按钮
-            let switchBtn = UIButton(frame: CGRect(x: bounds.width - 35, y: 5, width: 30, height: th))
-            switchBtn.layer.cornerRadius = 3
-            switchBtn.layer.borderWidth = 1
-            switchBtn.layer.borderColor = UIColor.blue.cgColor
-            switchBtn.titleLabel?.font = UIFont.systemFont(ofSize: 8)
-            switchBtn.setTitleColor(UIColor.blue, for: .normal)
-            switchBtn.showsTouchWhenHighlighted = true
-            switchBtn.addTarget(self, action: #selector(switchGraphics), for: .touchUpInside)
-            addSubview(switchBtn)
-
+    /// 创建柱状视图的容器
+    ///
+    /// - Parameter frame: 容器frame值
+    fileprivate func createHistogramContainerView(frame: CGRect, with drawsInfo: [Any]) {
+        if let histogramView = allowHistogram ? ERHistogramView(frame: frame) : nil {
             if isHistogramFirst {
-                switchBtn.setTitle("弧形图", for: .normal)
                 addSubview(histogramView)
                 sendSubview(toBack: _circleView)
             } else {
-                switchBtn.setTitle("柱状图", for: .normal)
                 insertSubview(histogramView, at: 0)
             }
             _histogramView = histogramView
@@ -205,13 +233,35 @@ extension ERView {
         }
     }
 
+    /// 创建切换按钮
+    fileprivate func createSwitchButton(with height: CGFloat) {
+        let switchBtn = UIButton(frame: CGRect(x: bounds.width - 35, y: 5, width: 30, height: height))
+        switchBtn.layer.cornerRadius = 3
+        switchBtn.layer.borderWidth = 1
+        switchBtn.layer.borderColor = UIColor.blue.cgColor
+        switchBtn.titleLabel?.font = UIFont.systemFont(ofSize: 8)
+        switchBtn.setTitleColor(UIColor.blue, for: .normal)
+        switchBtn.showsTouchWhenHighlighted = true
+        switchBtn.addTarget(self, action: #selector(switchGraphics), for: .touchUpInside)
+        addSubview(switchBtn)
+
+        if isHistogramFirst {
+            switchBtn.setTitle("弧形图", for: .normal)
+        } else {
+            switchBtn.setTitle("柱状图", for: .normal)
+        }
+    }
+}
+
+//MARK: - Graphics
+extension ERView {
+
     /// 绘制弧形视图
     ///
     /// - Parameters:
     ///   - circleView: 弧形时图承载容器
     ///   - drawsInfo: 绘制信息
-    ///   - offsetY: 偏移
-    fileprivate func stroke(_ circleView: UIView, with drawsInfo: [Any]) {
+    fileprivate func graphic(circleView: UIView, with drawsInfo: [Any]) {
         /// 绘制摘要
         var maxDigestWidth: CGFloat = 0
         var maxDigestHeight: CGFloat = 0
@@ -366,50 +416,6 @@ extension ERView {
             btn.setTitle("柱状图", for: .normal)
         }
     }
-
-    /// 根据原点p和已知点p1计算扩展的两个点
-    ///
-    /// - Parameters:
-    ///   - p: 原点
-    ///   - p1: 已知点
-    /// - Returns: 原点与已知点线上的两个点
-    fileprivate func calculateExtendPoint(_ frame: CGRect, p: CGPoint, _ p1: CGPoint) -> (CGPoint, CGPoint) {
-
-        /// 计算扩展点相对宽高
-        let deltaX = max(p1.x, p.x) - min(p1.x, p.x)
-        let deltaY = max(p1.y, p.y) - min(p1.y, p.y)
-        let x2: CGFloat, y2: CGFloat
-        let x3: CGFloat, y3: CGFloat
-        if deltaX > deltaY {
-            x2 = deltaX + min(frame.width * 0.1, 25)
-            y2 = x2 * deltaY / deltaX
-            x3 = deltaX + min(frame.width * 0.15, 35)
-            y3 = x3 * deltaY / deltaX
-        } else {
-            y2 = deltaY + min(frame.width * 0.1, 25)
-            x2 = y2 * deltaX / deltaY
-            y3 = deltaY + min(frame.width * 0.15, 35)
-            x3 = y3 * deltaX / deltaY
-        }
-
-        /// 根据象限返回点
-        /// 第四象限
-        if p1.x >= p.x && p1.y >= p.y {
-            return (CGPoint(x: p.x + x2, y: p.y + y2), CGPoint(x: p.x + x3, y: p.y + y3))
-        }
-            /// 第三象限
-        else if p1.x <= p.x && p1.y >= p.y {
-            return (CGPoint(x: p.x - x2, y: p.y + y2), CGPoint(x: p.x - x3, y: p.y + y3))
-        }
-            /// 第二象限
-        else if p1.x <= p.x && p1.y <= p.y {
-            return (CGPoint(x: p.x - x2, y: p.y - y2), CGPoint(x: p.x - x3, y: p.y - y3))
-        }
-            /// 第一象限
-        else {
-            return (CGPoint(x: p.x + x2, y: p.y - y2), CGPoint(x: p.x + x3, y: p.y - y3))
-        }
-    }
 }
 
 //MARK: - Supports
@@ -461,6 +467,50 @@ extension ERView {
             return randomColor(neitherColors:colors)
         } else {
             return color
+        }
+    }
+
+    /// 根据原点p和已知点p1计算扩展的两个点
+    ///
+    /// - Parameters:
+    ///   - p: 原点
+    ///   - p1: 已知点
+    /// - Returns: 原点与已知点线上的两个点
+    fileprivate func calculateExtendPoint(_ frame: CGRect, p: CGPoint, _ p1: CGPoint) -> (CGPoint, CGPoint) {
+
+        /// 计算扩展点相对宽高
+        let deltaX = max(p1.x, p.x) - min(p1.x, p.x)
+        let deltaY = max(p1.y, p.y) - min(p1.y, p.y)
+        let x2: CGFloat, y2: CGFloat
+        let x3: CGFloat, y3: CGFloat
+        if deltaX > deltaY {
+            x2 = deltaX + min(frame.width * 0.1, 25)
+            y2 = x2 * deltaY / deltaX
+            x3 = deltaX + min(frame.width * 0.15, 35)
+            y3 = x3 * deltaY / deltaX
+        } else {
+            y2 = deltaY + min(frame.width * 0.1, 25)
+            x2 = y2 * deltaX / deltaY
+            y3 = deltaY + min(frame.width * 0.15, 35)
+            x3 = y3 * deltaX / deltaY
+        }
+
+        /// 根据象限返回点
+        /// 第四象限
+        if p1.x >= p.x && p1.y >= p.y {
+            return (CGPoint(x: p.x + x2, y: p.y + y2), CGPoint(x: p.x + x3, y: p.y + y3))
+        }
+            /// 第三象限
+        else if p1.x <= p.x && p1.y >= p.y {
+            return (CGPoint(x: p.x - x2, y: p.y + y2), CGPoint(x: p.x - x3, y: p.y + y3))
+        }
+            /// 第二象限
+        else if p1.x <= p.x && p1.y <= p.y {
+            return (CGPoint(x: p.x - x2, y: p.y - y2), CGPoint(x: p.x - x3, y: p.y - y3))
+        }
+            /// 第一象限
+        else {
+            return (CGPoint(x: p.x + x2, y: p.y - y2), CGPoint(x: p.x + x3, y: p.y - y3))
         }
     }
 }

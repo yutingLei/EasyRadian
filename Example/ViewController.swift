@@ -30,7 +30,7 @@ class ViewController: UIViewController {
             erView.digestLoc = .top
             erView.show3DEffect = true
             erView.isHistogramFirst = true
-            erView.startDraw()
+            erView.drawStart()
             view.addSubview(erView)
         }
     }
